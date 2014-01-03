@@ -8,6 +8,6 @@
 * License: GPL2 or contact author
 */
 
-//Call Configuration to initialize
-require_once("Config.php");
-$GLOBALS['FlexiVoteConfig'] = new \FlexiVote\Config();
+//Call Settings to initialize
+require_once("Settings.php");
+$GLOBALS['FlexiVoteSettings'] = new \FlexiVote\Settings();

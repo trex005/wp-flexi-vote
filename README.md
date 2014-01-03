@@ -13,11 +13,13 @@ There are lots of "vote" "like" "up/down" WordPress plugins out there, however i
 * "up/down"->Ability to mark an item positively or negatively
 * "Rate"->The ability to mark an item on a scale (e.g. 1-10,1-5,1-4 etc).
 	* Should have the ability to represent the scale graphically, (eg, 1-10 could be 5 stars with the ability to rate in 1/2 star increments)
+* "Poll"->The ability to choose from a list of options
 
 **Force unique votes**
 * Per username
 * Per IP
 * Per Session
+* Per Timeframe (hours, days)
 
 **Allow anonymous (not logged in) voting**
 

@@ -11,6 +11,9 @@ class Vote
     {
     }
 
+    public static function CastUnique($flexivote_id,$vote_answer)
+    {
+    }
     /**
      * Save a vote without any restrictions
      * @param int $flexivote_id is the

@@ -1,6 +1,6 @@
 <?php
 Namespace FlexiVote;
-class Config
+class Settings
 {
     //This is not a user configuration file, DO NOT TOUCH
     //This is not a user configuration file, DO NOT TOUCH
@@ -59,6 +59,10 @@ class Config
         }
     }
 
+    public static function getFlexiVoteSetting()
+    {
+
+    }
     /**
      * Registers our custom post type with wordpress
      */
