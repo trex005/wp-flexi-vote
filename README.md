@@ -36,3 +36,6 @@ There are lots of "vote" "like" "up/down" WordPress plugins out there, however i
 * Per Page
 * Per User
 * Per Date/Date Range
+
+**Allow users to retract their vote**
+* Should only be within unique vote timeframe

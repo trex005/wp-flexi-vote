@@ -30,7 +30,7 @@ class Settings
     static function PluginActivation()
     {
         //Get the version from the last activation
-        $old_version = \get_option('FlexiVoteVersion');
+        $old_version = \get_option('FlexiVote_Version');
         //If this does not exist, run install script
         if($old_version === false)
         {
@@ -42,14 +42,21 @@ class Settings
             self::PluginUpdate($old_version);
         }
         //Save this version for future activations
-        \add_option("FlexiVoteVersion", self::$FlexiVoteVersion);
+        \add_option("FlexiVote_Version", self::$FlexiVoteVersion);
     }
 
+    /**
+     * runs only the first time the plugin is activated (eg installed)
+     */
     static function PluginInstall()
     {
         Database::createVotesTable();
     }
 
+    /**
+     * Runs every time the plugin is activated and it's current version is newer than the last activation (eg updated)
+     * @param $old_version
+     */
     static function PluginUpdate($old_version)
     {
         if($old_version <= 0.001)
@@ -59,12 +66,67 @@ class Settings
         }
     }
 
-    public static function getFlexiVoteSetting()
+    /**
+     * Gets the current value of a given setting.
+     * Settings are checked in the following order
+     *      passed in the shortcode args
+     *      The post meta (flexivote or page included on)
+     *      Sitewide defaults
+     *      Plugin defaults
+     * @param int $flexivote_id
+     * @param string $setting_name
+     * @param mixed $args
+     * @return mixed Value of setting, or false if setting does not exist
+     */
+    public static function getFlexiVoteSetting($flexivote_id,$setting_name,$args=false)
     {
+        //first check args
+        if($args !== false && isset($args[$setting_name]))
+        {
+            return $args[$setting_name];
+        }
 
+        //second check post meta
+        $meta_value = \get_post_meta($flexivote_id,'FlexiVote_Setting_' . $setting_name,true);
+        if($meta_value != '')return $meta_value;
+
+        //third check site defaults
+        $default = \get_option('FlexiVote_Setting_' . $setting_name);
+        if($default !== false)            return $default;
+
+        //fourth check plugin defaults
+        $default_settings = array(
+            'setting_name'=>'value'
+        );
+        if(isset($default_settings[$setting_name]))return $default_settings[$setting_name];
+
+        //if still nothing, throw exception.
+        trigger_error("FlexiVote: Setting '$setting_name' could not be found",E_WARNING);
+        return false;
+    }
+
+    /**
+     * Sets a setting on a specific FlexiVote (or page which hosts a FlexiVote)
+     * @param $flexivote_id
+     * @param $setting_name
+     * @param $setting_value
+     */
+    public static function setFlexiVoteSetting($flexivote_id,$setting_name,$setting_value)
+    {
+        \update_post_meta($flexivote_id,'FlexiVote_Setting_' . $setting_name,$setting_value);
+    }
+
+    /**
+     * Sets the site default option for a given setting
+     * @param $setting_name
+     * @param $setting_value
+     */
+    public static function setDefaultSetting($setting_name,$setting_value)
+    {
+        \update_option('FlexiVote_Setting_' . $setting_name,$setting_value);
     }
     /**
-     * Registers our custom post type with wordpress
+     * Registers our custom post type with WordPress
      */
     static function setCustomPostTypes()
     {

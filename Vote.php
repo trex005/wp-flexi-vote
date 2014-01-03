@@ -13,6 +13,31 @@ class Vote
 
     public static function CastUnique($flexivote_id,$vote_answer)
     {
+        $current_user = get_current_user_id();
+        $unique_settings = Settings::getFlexiVoteSetting($flexivote_id,'anonymous_unique');
+        if($current_user != 0)
+        {
+            $unique_settings = Settings::getFlexiVoteSetting($flexivote_id,'logged_in_unique');
+        }
+        $unique_array = explode(",",$unique_settings);
+        $or_wheres = array();
+        foreach($unique_array as $this_setting)
+        {
+            $this_setting_parts = explode(':',$this_setting);
+            switch(strtolower($this_setting_parts[0]))
+            {
+                case 'user':
+                    $or_wheres[] = " user_id = $current_user ";
+                    break;
+                case 'ip':
+                    $or_wheres[] = " ip = INET_ATON('" . $_SERVER['REMOTE_ADDR'] . "') ";
+                    break;
+                case 'hours':
+                    if(!isset($this_setting_parts[1]) || !is_int($this_setting_parts[1]))break;
+                    $or_wheres = ""
+                    break;
+            }
+        }
     }
     /**
      * Save a vote without any restrictions
