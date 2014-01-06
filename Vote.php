@@ -11,6 +11,12 @@ class Vote
     {
     }
 
+    /**
+     * Record a vote if allowed by the uniqueness rules
+     * @param $flexivote_id
+     * @param $vote_answer
+     * @return bool true if vote met requirements and was cast, false if not
+     */
     public static function CastUnique($flexivote_id,$vote_answer)
     {
         $current_user = get_current_user_id();
@@ -21,6 +27,7 @@ class Vote
         }
         $unique_array = explode(",",$unique_settings);
         $or_wheres = array();
+        $and_wheres = array();
         foreach($unique_array as $this_setting)
         {
             $this_setting_parts = explode(':',$this_setting);
@@ -34,13 +41,16 @@ class Vote
                     break;
                 case 'hours':
                     if(!isset($this_setting_parts[1]) || !is_int($this_setting_parts[1]))break;
-                    $or_wheres = ""
+                    $and_wheres[] = " voted_on >= DATE_SUB(NOW(), INTERVAL $this_setting_parts[1] HOUR) ";
                     break;
             }
         }
+        //TODO: write SQL to determine if vote meets rules
+        return false;
     }
+
     /**
-     * Save a vote without any restrictions
+     * Record a vote without any restrictions
      * @param int $flexivote_id is the
      * @param int $vote_answer
      */
