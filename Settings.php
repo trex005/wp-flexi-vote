@@ -1,4 +1,5 @@
 <?php
+
 Namespace FlexiVote;
 class Settings
 {
@@ -15,6 +16,7 @@ class Settings
     /**
      * Initiates all variables and configuration functions needed to run FlexiVote
      */
+     
     function __construct()
     {
         //register our custom post type
@@ -31,6 +33,7 @@ class Settings
     {
         //Get the version from the last activation
         $old_version = \get_option('FlexiVote_Version');
+        
         //If this does not exist, run install script
         if($old_version === false)
         {
@@ -65,7 +68,6 @@ class Settings
             //This was put here as an example for future updates
         }
     }
-
     /**
      * Gets the current value of a given setting.
      * Settings are checked in the following order
@@ -104,7 +106,6 @@ class Settings
         trigger_error("FlexiVote: Setting '$setting_name' could not be found",E_WARNING);
         return false;
     }
-
     /**
      * Sets a setting on a specific FlexiVote (or page which hosts a FlexiVote)
      * @param $flexivote_id
@@ -115,7 +116,6 @@ class Settings
     {
         \update_post_meta($flexivote_id,'FlexiVote_Setting_' . $setting_name,$setting_value);
     }
-
     /**
      * Sets the site default option for a given setting
      * @param $setting_name

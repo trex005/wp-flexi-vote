@@ -10,4 +10,6 @@
 
 //Call Settings to initialize
 require_once("Settings.php");
+require_once("Database.php");
+
 $GLOBALS['FlexiVoteSettings'] = new \FlexiVote\Settings();

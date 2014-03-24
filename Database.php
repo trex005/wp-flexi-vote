@@ -22,6 +22,9 @@ class Database
           PRIMARY KEY  (vote_id)
         )
         ";
+        
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+        
         \dbDelta( $sql );
 
         //mysql does not support using NOW() as a default value for datetime, so we'll use a trigger to accomplish this
